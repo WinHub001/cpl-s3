@@ -1,0 +1,1238 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>K Town Premier League (A3) – Season 3 | IPL-Style Auction Desk</title>
+<style>
+:root{
+  --bg:#020617; --panel:#0b1220; --card:#020617; --accent:#38bdf8; --gold:#fbbf24;
+  --muted:#94a3b8; --success:#22c55e; --danger:#ef4444; --purple:#7c3aed;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:radial-gradient(1200px 600px at 50% -10%, #0b1220, #020617 60%);
+  color:#e5e7eb;
+}
+/* HEADER */
+header{
+  height:68px; padding:0 18px;
+  background:linear-gradient(90deg,#020617,#0b1220);
+  border-bottom:1px solid #1f2933;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.brand{
+  display:flex; align-items:center; gap:12px;
+}
+.brand .logo{
+  width:44px; height:44px; border-radius:10px; background:#0f172a;
+  display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--gold);
+  border:1px solid #1f2933;
+}
+.brand h1{font-size:18px; margin:0; color:white; letter-spacing:.4px}
+.header-badges{display:flex; gap:10px; align-items:center; font-size:12px}
+.badge{
+  padding:6px 10px; border-radius:999px; background:#0f172a; border:1px solid #1f2933; color:#e5e7eb
+}
+.badge b{color:white}
+
+/* LAYOUT */
+.app{
+  display:grid; grid-template-columns: 3fr 1.4fr; gap:14px; padding:14px;
+}
+
+/* MAIN STAGE */
+.stage{
+  background:linear-gradient(180deg,#020617,#020617);
+  border:1px solid #1f2933; border-radius:16px; padding:14px; box-shadow:0 10px 30px rgba(0,0,0,.35);
+}
+.stage-grid{
+  display:grid; grid-template-columns: 1.1fr 1.2fr 1.1fr; gap:12px;
+}
+
+/* PLAYER SPOTLIGHT */
+.spotlight{
+  background:linear-gradient(180deg,#0b1220,#020617);
+  border:1px solid #1f2933; border-radius:14px; padding:12px; position:relative;
+}
+.spotlight .title{font-size:13px; color:var(--muted); margin-bottom:8px}
+.spotlight-card{
+  display:flex; gap:14px; align-items:center;
+}
+.spotlight-card img{
+  width:110px; height:110px; border-radius:50%; border:3px solid #1f2933; background:#020617;
+}
+.spotlight-info .name{font-size:24px; font-weight:800; color:white; letter-spacing:.4px}
+.spotlight-info .meta{font-size:13px; color:var(--muted); margin-top:2px}
+.tag{display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; margin-left:8px}
+.tagA{background:#16a34a;color:#022c22}
+.tagB{background:#2563eb;color:white}
+.tagC{background:#f59e0b;color:#422006}
+
+/* BID BOARD */
+.bidboard{
+  background:linear-gradient(180deg,#0b1220,#020617);
+  border:1px solid #1f2933; border-radius:14px; padding:12px; display:flex; flex-direction:column; gap:10px;
+}
+.bidrow{display:flex; justify-content:space-between; align-items:center; font-size:14px}
+.bidval{font-size:20px; font-weight:800; color:white}
+.hb{color:var(--gold); font-weight:700}
+.dice-row{display:flex; gap:8px}
+.btn{
+  padding:10px 14px; border-radius:12px; border:1px solid #1f2933; background:#0f172a; color:white; cursor:pointer; transition:.15s;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.35; filter:blur(1px); cursor:not-allowed}
+.btn-primary{background:#1d4ed8; border-color:#1d4ed8}
+.btn-success{background:#16a34a; border-color:#16a34a}
+.btn-danger{background:#dc2626; border-color:#dc2626}
+.btn-purple{background:#6d28d9; border-color:#6d28d9}
+.btn-warning{background:#f59e0b; border-color:#f59e0b; color:#422006}
+.bid-buttons{display:grid; grid-template-columns:repeat(2,1fr); gap:8px}
+.action-row{display:flex; gap:8px}
+
+/* TEAMS STRIP */
+.teams-strip{
+  background:linear-gradient(180deg,#0b1220,#020617);
+  border:1px solid #1f2933; border-radius:14px; padding:10px;
+}
+.teams-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px}
+.team-card{
+  background:linear-gradient(180deg,#020617,#020617); border:1px solid #1f2933; border-radius:12px; padding:10px;
+}
+.team-head{display:flex; justify-content:space-between; align-items:center}
+.team-name{font-weight:800; color:white}
+.team-wallet{font-size:12px; color:var(--gold)}
+.team-meta{font-size:12px; color:var(--muted); margin:4px 0}
+.team-players{display:flex; flex-direction:column; gap:6px}
+.team-player{display:flex; align-items:center; gap:6px; font-size:13px}
+.team-player img{width:28px; height:28px; border-radius:50%}
+
+/* RIGHT SIDEBAR */
+.sidebar{
+  display:grid; grid-template-rows: auto 1fr auto; gap:14px;
+}
+.card{
+  background:linear-gradient(180deg,#020617,#020617);
+  border:1px solid #1f2933; border-radius:14px; padding:12px;
+}
+.card-title{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px}
+.card-title h3{margin:0; font-size:14px; color:white}
+.pool-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.pool-box{background:#0b1220; border:1px solid #1f2933; border-radius:10px; padding:8px; font-size:12px}
+.pool-box b{color:white}
+.log{height:200px; overflow:auto; background:#0b1220; border:1px solid #1f2933; border-radius:10px; padding:8px; font-size:12px; color:#cbd5f5}
+
+/* TICKER */
+.ticker{
+  position:fixed; bottom:0; left:0; right:0; height:44px; background:linear-gradient(90deg,#020617,#0b1220);
+  border-top:1px solid #1f2933; display:flex; align-items:center; padding:0 14px; gap:10px;
+}
+.ticker .label{color:var(--gold); font-weight:800}
+.ticker .text{white-space:nowrap; overflow:hidden}
+
+/* SOLD OVERLAY */
+#soldOverlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.75); display:none; align-items:center; justify-content:center; z-index:999;
+}
+#soldOverlay .box{
+  background:linear-gradient(180deg,#0b1220,#020617); border:1px solid #1f2933; border-radius:18px; padding:34px 42px; text-align:center; animation:pop .35s ease;
+}
+#soldOverlay .box .big{font-size:68px}
+#soldOverlay .box h2{margin:10px 0 4px 0; color:white}
+#soldOverlay .box p{margin:0; color:var(--muted)}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+
+@media(max-width:1200px){
+  .app{grid-template-columns:1fr}
+  .stage-grid{grid-template-columns:1fr}
+  .teams-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* Team Colors */
+.btn-gladiators{background:#dc2626;border-color:#dc2626}
+.btn-legends{background:#2563eb;border-color:#2563eb}
+.btn-spartans{background:#16a34a;border-color:#16a34a}
+.btn-avengers{background:#7c3aed;border-color:#7c3aed}
+
+
+/* CLEAN FIX: Live panel directly below header */
+.stage-grid{
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.spotlight{
+  grid-column: 1 / -1;
+}
+
+
+/* FIX overlays to center screen */
+#soldOverlay, #unsoldOverlay, #roundFlashOverlay{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:5000;
+}
+
+
+/* WELCOME HEADING */
+.welcome-heading{
+  width:100%;
+  text-align:center;
+  font-size:34px;
+  font-weight:900;
+  letter-spacing:1.5px;
+  padding:10px 0;
+  color: var(--gold);
+  background:linear-gradient(90deg,#020617,#0b1220,#020617);
+  border-bottom:1px solid #1f2933;
+}
+
+/* RUNNING LIVE PANEL */
+.live-runner{
+  width:100%;
+  overflow:hidden;
+  white-space:nowrap;
+  background:#0b1220;
+  border-bottom:1px solid #1f2933;
+  padding:10px 0;
+}
+.live-runner span{
+  display:inline-block;
+  padding-left:100%;
+  font-size:28px;
+  font-weight:900;
+  color:#38bdf8;
+  animation: liveMarquee 14s linear infinite;
+}
+
+@keyframes liveMarquee{
+  0%{ transform:translateX(0%); }
+  100%{ transform:translateX(-100%); }
+}
+
+
+/* BOTTOM LIVE TICKER - MARKET STYLE */
+.ticker{
+  position:fixed; bottom:0; left:0; right:0; height:60px;
+  background:linear-gradient(90deg,#020617,#0b1220);
+  border-top:1px solid #1f2933; display:flex; align-items:center; padding:0 14px; gap:10px; z-index:900;
+}
+.ticker .label{color:var(--gold); font-weight:900; font-size:18px}
+.ticker .text{
+  white-space:nowrap; overflow:hidden; position:relative; width:100%;
+}
+.ticker .text span{
+  display:inline-block; padding-left:100%;
+  font-size:22px;
+  font-weight:900;
+  color:#38bdf8;
+  animation: marquee 16s linear infinite;
+}
+@keyframes marquee{
+  0%{ transform: translateX(0%); }
+  100%{ transform: translateX(-100%); }
+}
+
+
+/* BETTER UNSOLD OVERLAY */
+#unsoldOverlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.75);
+  display:none; align-items:center; justify-content:center; z-index:999;
+}
+#unsoldOverlay .unsold-box{
+  background:linear-gradient(180deg,#1f2933,#020617);
+  border:2px solid #ef4444;
+  border-radius:18px; padding:34px 42px;
+  text-align:center; animation:unsoldPop .4s ease, unsoldShake .4s ease .4s;
+  box-shadow:0 0 25px rgba(239,68,68,.6);
+}
+#unsoldOverlay .unsold-box .big{font-size:72px}
+#unsoldOverlay .unsold-box h2{margin:10px 0 4px 0; color:#ef4444; letter-spacing:1px}
+#unsoldOverlay .unsold-box p{margin:0; color:#e5e7eb}
+
+@keyframes unsoldPop{
+  0%{transform:scale(.6);opacity:0}
+  80%{transform:scale(1.1);opacity:1}
+  100%{transform:scale(1)}
+}
+@keyframes unsoldShake{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-6px)}
+  50%{transform:translateX(6px)}
+  75%{transform:translateX(-6px)}
+  100%{transform:translateX(0)}
+}
+
+
+/* ROUND ARROWS IN HEADER */
+.round-arrows{
+  display:flex;
+  gap:6px;
+  margin-right:12px;
+}
+.round-arrows .btn{
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:14px;
+}
+
+
+/* CENTER ROUND CONTROL + BADGES IN HEADER */
+header{
+  display:grid;
+  grid-template-columns: auto 1fr auto;
+  align-items:center;
+}
+.brand{ justify-self:start; }
+.header-center{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+}
+.header-right{ justify-self:end; }
+
+
+/* ROUND ARROWS - TOP RIGHT */
+header{
+  position:relative;
+}
+.round-arrows-top-right{
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
+  display:flex;
+  gap:6px;
+}
+.round-arrows-top-right .btn{
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:14px;
+}
+
+
+@keyframes roundPop{
+  0%{transform:scale(.6); opacity:0}
+  80%{transform:scale(1.1); opacity:1}
+  100%{transform:scale(1)}
+}
+
+
+
+/* ===== Wallet Highlight per Round ===== */
+.team-card .wallet{
+  padding:4px 8px;
+  border-radius:10px;
+  font-weight:800;
+}
+.round-1 .team-card .wallet{ background:#064e3b; color:#34d399; }
+.round-2 .team-card .wallet{ background:#1e3a8a; color:#60a5fa; }
+.round-3 .team-card .wallet{ background:#7c2d12; color:#fb923c; }
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+
+<header>
+  <div class="brand">
+    <div class="logo">KPL</div>
+    <h1>K Town Premier League (A3) – Season 3 | Mega Auction</h1>
+  
+  <div class="header-center">
+    
+
+  <div class="header-badges">
+    <span class="badge">Round: <b id="round">1</b></span>
+    <span class="badge">Round Cap: <span id="roundCapVal">₹35,000</span></span>
+    <span class="badge">Max Bid: ₹18,000</span>
+  </div>
+    </div>
+  <div class="header-right"></div>
+
+  <div class="round-arrows-top-right">
+    <button class="btn btn-outline" id="prevBtn" onclick="prevRound()">◀</button>
+    <button class="btn btn-outline" id="nextBtn" onclick="nextRound()">▶</button>
+  </div>
+
+</header>
+
+<!-- WELCOME HEADING -->
+
+
+
+<div class="app">
+
+  <!-- MAIN STAGE -->
+  <div class="stage">
+    <div class="stage-grid">
+
+      <!-- SPOTLIGHT -->
+      <div class="spotlight">
+        <div class="title">PLAYER UNDER THE HAMMER</div>
+        <div id="livePlayer" class="spotlight-card">
+          <img src="https://via.placeholder.com/110"/>
+          <div class="spotlight-info">
+            <div class="name">Awaiting Selection</div>
+            <div class="meta">Pick Group A / B / C to begin</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BID BOARD -->
+      <div class="bidboard">
+        <div class="bidrow">Base Price <span class="bidval">₹<span id="basePrice">0</span></span></div>
+        <div class="bidrow">Current Bid <span class="bidval">₹<span id="currentBid">0</span></span></div>
+        <div class="bidrow">Highest Bidder <span class="hb" id="highestBidder">-</span></div>
+
+        <div class="dice-row">
+          <button class="btn btn-purple" id="btnA" onclick="pickPlayer('A')">🔨 Group A (₹6000)</button>
+          <button class="btn btn-purple" id="btnB" onclick="pickPlayer('B')">🔨 Group B (₹4000)</button>
+          <button class="btn btn-purple" id="btnC" onclick="pickPlayer('C')">🔨 Group C (₹2000)</button>
+        </div>
+        <div class="small-muted">R1&2: 3A 3B 5C · R3: 2A 2B 6C</div>
+
+        <div class="bid-buttons">
+          <button class="btn btn-primary" class="btn btn-primary btn-gladiators" id="bid0" onclick="bid(0)">Gladiators +1000</button>
+          <button class="btn btn-primary" class="btn btn-primary btn-legends" id="bid1" onclick="bid(1)">Legends +1000</button>
+          <button class="btn btn-primary" class="btn btn-primary btn-spartans" id="bid2" onclick="bid(2)">Spartans +1000</button>
+          <button class="btn btn-primary" class="btn btn-primary btn-avengers" id="bid3" onclick="bid(3)">Avengers +1000</button>
+        </div>
+
+        <div class="action-row">
+          <button class="btn btn-danger" onclick="undoBid()">Undo Bid</button>
+          <button class="btn btn-danger" onclick="undoPick()">Undo Pick</button>
+          <button class="btn btn-warning" onclick="markUnsold()">Unsold</button>
+          <button class="btn btn-success" onclick="sellPlayer()">Sold</button>
+        </div>
+      </div>
+
+      <!-- TEAMS STRIP -->
+      <div class="teams-strip">
+        <div class="teams-grid" id="teams"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="sidebar">
+    <div class="card">
+      <div class="card-title"><h3>Player Pool (32 · 8A 8B 16C)</h3></div>
+      <div class="pool-grid" id="pool"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><h3>Auction Log</h3></div>
+      <div class="log" id="log"></div>
+    </div>
+
+    
+  </div>
+
+</div>
+
+
+<!-- UNSOLD OVERLAY -->
+<div id="unsoldOverlay">
+  <div class="box unsold-box">
+    <div class="big">😞🍀</div>
+    <h2 id="unsoldTitle">BAD LUCK!</h2>
+    <p id="unsoldSub"></p>
+  </div>
+</div>
+
+<!-- SOLD OVERLAY -->
+<div id="soldOverlay">
+  <div class="box">
+    <div class="big">🎉👏🎉</div>
+    <h2 id="soldTitle">SOLD! 😄</h2>
+    <p id="soldSub"></p>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <span class="label">LIVE:</span>
+  <div class="text"><span id="tickerText">WELCOME TO K TOWN (A3) PREMIER LEAGUE – SEASON 3 MEGA AUCTION</div>
+</div>
+
+<script>
+const BASE_PRICE = {A:6000, B:4000, C:2000};
+const TOTAL_POOL = {A:8, B:8, C:16};
+const TEAM_LIMIT = {A:2, B:2, C:4};
+const TEAM_MAX = 8;
+const TEAM_LIMITS = {A:2,B:2,C:4};
+const ROUND_SPLIT = {1:{A:3,B:3,C:5},2:{A:3,B:3,C:5},3:{A:2,B:2,C:6}};
+const ROUND_CAP = {1:35000, 2:35000, 3:30000};
+const ROUND_CAPS = {1:35000, 2:35000, 3:30000};;
+const MAX_BID = 18000;
+
+let round = 1;
+document.addEventListener("DOMContentLoaded",()=>{ const rEl=document.getElementById("round"); if(rEl) rEl.innerText=round; updateRoundCapUI(); });
+let roundCount = {A:0,B:0,C:0};
+let totalCount = {A:0,B:0,C:0};
+let unsoldQueue = [];
+
+let teams = [
+  {name:"Gladiators", captain:"Pankaj", wallet:100000, spend:0, A:[],B:[],C:[]},
+  {name:"Legends", captain:"Yatin", wallet:100000, spend:0, A:[],B:[],C:[]},
+  {name:"Spartans", captain:"Shri", wallet:100000, spend:0, A:[],B:[],C:[]},
+  {name:"Avengers", captain:"DK", wallet:100000, spend:0, A:[],B:[],C:[]}
+];
+
+
+let players = [
+  // -------- GROUP A (8) --------
+  {name:"Gaurav", group:"A", photo:"photos/gaurav.jpg", stats:"BAT"},
+  {name:"Hemant", group:"A", photo:"photos/hemant.jpg", stats:"BAT"},
+  {name:"Mohit", group:"A", photo:"photos/mohit.jpg", stats:"AR"},
+  {name:"Prashant", group:"A", photo:"photos/prashant.jpg", stats:"BAT"},
+  {name:"Rupesh", group:"A", photo:"photos/rupesh.jpg", stats:"BOWL"},
+  {name:"Rushi", group:"A", photo:"photos/rushi.jpg", stats:"AR"},
+  {name:"Santosh", group:"A", photo:"photos/santosh.jpg", stats:"BAT"},
+  {name:"Uday", group:"A", photo:"photos/uday.jpg", stats:"BOWL"},
+
+  // -------- GROUP B (8) --------
+  {name:"Anupam", group:"B", photo:"photos/anupam.jpg", stats:"BAT"},
+  {name:"Deepak", group:"B", photo:"photos/deepak.jpg", stats:"AR"},
+  {name:"Jaideep", group:"B", photo:"photos/jaideep.jpg", stats:"BOWL"},
+  {name:"Pranav", group:"B", photo:"photos/pranav.jpg", stats:"BAT"},
+  {name:"Rohit", group:"B", photo:"photos/rohit.jpg", stats:"BAT"},
+  {name:"Ravi", group:"B", photo:"photos/ravi.jpg", stats:"AR"},
+  {name:"Suraj", group:"B", photo:"photos/suraj.jpg", stats:"BOWL"},
+  {name:"Swamy", group:"B", photo:"photos/swamy.jpg", stats:"AR"},
+
+  // -------- GROUP C (16) --------
+  {name:"Arsh", group:"C", photo:"photos/arsh.jpg", stats:"BAT"},
+  {name:"Arvind", group:"C", photo:"photos/arvind.jpg", stats:"BOWL"},
+  {name:"Akshay", group:"C", photo:"photos/akshay.jpg", stats:"AR"},
+  {name:"Anoop", group:"C", photo:"photos/anoop.jpg", stats:"BAT"},
+  {name:"Aniket", group:"C", photo:"photos/aniket.jpg", stats:"BOWL"},
+  {name:"Gautam", group:"C", photo:"photos/gautam.jpg", stats:"AR"},
+  {name:"Manuj", group:"C", photo:"photos/manuj.jpg", stats:"BAT"},
+  {name:"Prashu", group:"C", photo:"photos/prashu.jpg", stats:"BOWL"},
+  {name:"Paras", group:"C", photo:"photos/paras.jpg", stats:"AR"},
+  {name:"Pratap", group:"C", photo:"photos/pratap.jpg", stats:"BAT"},
+  {name:"Prakhar", group:"C", photo:"photos/prakhar.jpg", stats:"BOWL"},
+  {name:"Sachin", group:"C", photo:"photos/sachin.jpg", stats:"AR"},
+  {name:"Sarfaraz", group:"C", photo:"photos/sarfaraz.jpg", stats:"BAT"},
+  {name:"Tushar", group:"C", photo:"photos/tushar.jpg", stats:"BOWL"},
+  {name:"Upen", group:"C", photo:"photos/upen.jpg", stats:"AR"},
+  {name:"Vivek", group:"C", photo:"photos/vivek.jpg", stats:"BAT"}
+];
+
+
+let selected = null;
+let currentBid = 0;
+let highestBidder = null;
+let bidHistory = [];
+
+function log(msg){
+  const l = document.getElementById("log");
+  l.innerHTML += "• " + msg + "<br>";
+  l.scrollTop = l.scrollHeight;
+  document.getElementById("tickerText").innerText = msg;
+  const lr = document.getElementById("liveRunnerText"); if(lr){ lr.innerText = msg; }
+}
+
+
+function updateTeamFigures(){
+  const split = ROUND_SPLIT[round];
+  teams.forEach(t=>{
+    const card = document.querySelector(`.team-card[data-key="${t.key}"]`);
+    if(!card) return;
+    const aPick = t.picks?.A || 0;
+    const bPick = t.picks?.B || 0;
+    const cPick = t.picks?.C || 0;
+
+    card.querySelector('.figA').innerText = aPick;
+    card.querySelector('.figB').innerText = bPick;
+    card.querySelector('.figC').innerText = cPick;
+
+    card.querySelector('.limA').innerText = split.A;
+    card.querySelector('.limB').innerText = split.B;
+    card.querySelector('.limC').innerText = split.C;
+  });
+}
+
+function renderTeams(){
+  const tdiv = document.getElementById("teams");
+  tdiv.innerHTML="";
+  teams.forEach((t)=>{
+    const d = document.createElement("div");
+    d.className="team-card";
+    const total = t.A.length+t.B.length+t.C.length;
+    let html = `
+      <div class="team-head">
+        <div class="team-name">${t.name}</div>
+        <div class="team-wallet">₹${t.wallet}</div>
+      </div>
+      <div class="team-meta">Players: ${total}/8 · A:${t.A.length}/2 B:${t.B.length}/2 C:${t.C.length}/4</div>
+      <div class="team-players">`;
+    ["A","B","C"].forEach(g=>{
+      t[g].forEach(p=>{
+        html+= `<div class="team-player">
+          <img src="${p.photo}"><span>${p.name}</span><span class="tag tag${g}">${g}</span>
+        </div>`;
+      });
+    });
+    html += "</div>";
+    d.innerHTML=html;
+    tdiv.appendChild(d);
+  });
+}
+
+function renderPool(){
+  const pdiv = document.getElementById("pool");
+  pdiv.innerHTML="";
+  ["A","B","C"].forEach(g=>{
+    const box=document.createElement("div");
+    box.className="pool-box";
+    const list = players.filter(p=>p.group===g);
+    box.innerHTML = `<b>Group ${g} (${list.length}/${TOTAL_POOL[g]})</b><br>`;
+    list.forEach(p=>{ box.innerHTML += `${p.name}<br>`; });
+    pdiv.appendChild(box);
+  });
+  updateCategoryButtons();
+}
+
+function updateCategoryButtons(){
+  ["A","B","C"].forEach(g=>{
+    const btn = document.getElementById("btn"+g);
+    const roundDone = roundCount[g] >= ROUND_SPLIT[round][g];
+    const totalDone = totalCount[g] >= TOTAL_POOL[g];
+    btn.disabled = roundDone || totalDone;
+  });
+}
+
+function updateBidButtonsForCategory(){
+  teams.forEach((t,idx)=>{
+    const btn = document.getElementById("bid"+idx);
+    let disable = false;
+    const total = t.A.length+t.B.length+t.C.length;
+    if(total >= TEAM_MAX) disable = true;
+    if(selected && t[selected.group].length >= TEAM_LIMIT[selected.group]) disable = true;
+    btn.disabled = disable;
+  });
+}
+
+function updateLiveCard(){
+  const live = document.getElementById("livePlayer");
+  if(!selected){
+    live.innerHTML = `<img src="https://via.placeholder.com/110"/><div class="spotlight-info"><div class="name">Awaiting Selection</div><div class="meta">Pick Group A / B / C to begin</div></div>`;
+    return;
+  }
+  live.innerHTML = `
+    <img src="${selected.photo}"/>
+    <div class="spotlight-info">
+      <div class="name">${selected.name} <span class="tag tag${selected.group}">${selected.group}</span></div>
+      <div class="meta">${selected.stats}</div>
+    </div>`;
+  updateBidButtonsForCategory();
+}
+
+function pickPlayer(group){
+  if(roundCount[group] >= ROUND_SPLIT[round][group]) return;
+  const avail = players.filter(p=>p.group===group);
+  if(avail.length===0) return;
+  const p = avail[Math.floor(Math.random()*avail.length)];
+  selected = p;
+  currentBid = BASE_PRICE[group];
+  highestBidder = null;
+  bidHistory = [];
+  updateLiveCard();
+  document.getElementById("basePrice").innerText = BASE_PRICE[group];
+  document.getElementById("currentBid").innerText = currentBid;
+  document.getElementById("highestBidder").innerText = "-";
+}
+
+function undoPick(){
+  selected=null; currentBid=0; highestBidder=null; bidHistory=[];
+  updateLiveCard();
+  document.getElementById("basePrice").innerText=0;
+  document.getElementById("currentBid").innerText=0;
+  document.getElementById("highestBidder").innerText="-";
+  updateBidButtonsForCategory();
+}
+
+function bid(i){
+  if(!selected) return;
+  const team = teams[i];
+  const group = selected.group;
+  const total = team.A.length+team.B.length+team.C.length;
+
+  if(team[group].length>=TEAM_LIMIT[group]) return;
+  if(total>=TEAM_MAX) return;
+
+  const base = BASE_PRICE[group];
+
+  // If no one has bid yet, allow selecting team at BASE without +1000
+  if(highestBidder === null && currentBid === base){
+    highestBidder = i;
+    document.getElementById("highestBidder").innerText = team.name;
+    return;
+  }
+
+  let next = currentBid + 1000;
+  if(currentBid < base) next = base;
+
+  if(next>MAX_BID) return;
+  if(team.spend + next > ROUND_CAP[round]) return;
+
+  bidHistory.push({bid:currentBid,bidder:highestBidder});
+  currentBid = next;
+  highestBidder = i;
+  document.getElementById("currentBid").innerText=currentBid;
+  document.getElementById("highestBidder").innerText=team.name;
+}
+
+function undoBid(){
+  if(bidHistory.length===0) return;
+  const last = bidHistory.pop();
+  currentBid = last.bid;
+  highestBidder = last.bidder;
+  document.getElementById("currentBid").innerText=currentBid;
+  document.getElementById("highestBidder").innerText=highestBidder!==null?teams[highestBidder].name:"-";
+}
+
+function markUnsold(){
+  if(round === 3){
+    alert("UNSOLD is not allowed in Round 3");
+    return;
+  }
+  if(!selected) return;
+  const p = selected;
+
+  if(!unsoldQueue.includes(p)){
+    unsoldQueue.push(p);
+  }
+
+  log(`${p.name} marked UNSOLD – will be re-auctioned`);
+  showUnsold(p);
+
+  players = players.filter(x => x !== p);
+
+  undoPick();
+  renderPool();
+}
+
+
+
+
+function showUnsold(player){
+  const box = document.getElementById("unsoldOverlay");
+  if(!box) return;
+  document.getElementById("unsoldSub").innerText = `${player.name} goes UNSOLD – better luck next time!`;
+  box.style.display = "flex";
+  setTimeout(()=>{ box.style.display = "none"; }, 2200);
+}
+
+
+function updateBudgetStrip(){
+  const strip = document.getElementById("budgetStrip");
+  if(!strip || !window.teams) return;
+  teams.forEach((t,idx)=>{
+    const el = document.getElementById(`budget-${idx}`);
+    if(!el) return;
+    el.innerHTML = `<span class="name">${t.name}</span><span class="amt">₹${t.wallet.toLocaleString()}</span>`;
+  });
+}
+
+
+function getHighestByGroup(team, group){
+  if(!team[group] || team[group].length===0) return null;
+  return team[group].reduce((a,b)=> (b.price||0) > (a.price||0) ? b : a, team[group][0]);
+}
+
+
+
+function showFinalSummary(){
+  const overlay = document.getElementById("finalSummaryOverlay");
+  const grid = document.getElementById("finalTeamsGrid");
+  if(!overlay || !grid) return;
+  grid.innerHTML = "";
+
+  teams.forEach(t=>{
+    const wrap = document.createElement("div");
+    wrap.style.background = "linear-gradient(135deg,#0f172a,#020617)";
+    wrap.style.border = "1px solid #1f2933";
+    wrap.style.borderRadius = "16px";
+    wrap.style.padding = "16px 18px";
+    wrap.style.color = "#e5e7eb";
+
+    const squad = [].concat(t.A||[], t.B||[], t.C||[]);
+    let playersHtml = "";
+    for(let i=0;i<8;i++){
+      if(squad[i]){
+        playersHtml += `<div style="display:flex;align-items:center;gap:8px;margin:4px 0;">
+          <img src="${squad[i].photo}" style="width:26px;height:26px;border-radius:50%;">
+          <span style="font-weight:700;">${squad[i].name}</span>
+          <span style="opacity:.7">(${squad[i].group})</span>
+          <span style="margin-left:auto;color:#22c55e;">₹${(squad[i].price||BASE_PRICE[squad[i].group])}</span>
+        </div>`;
+      } else {
+        playersHtml += `<div style="display:flex;align-items:center;gap:8px;margin:4px 0;opacity:.35;">
+          <img src="https://via.placeholder.com/26">
+          <span>Empty Slot</span>
+        </div>`;
+      }
+    }
+
+    wrap.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:20px;font-weight:900;color:#facc15">${t.name}</div>
+        <div style="font-size:14px;color:#22c55e">Balance: ₹${t.wallet.toLocaleString()}</div>
+      </div>
+      <div style="margin-top:6px;font-size:12px;color:#9ca3af">A:${t.A.length}/2  B:${t.B.length}/2  C:${t.C.length}/4</div>
+      <div style="margin-top:8px;">
+        ${playersHtml}
+      </div>
+    `;
+    grid.appendChild(wrap);
+  });
+
+  let footer = document.getElementById("finalThankYou");
+  if(!footer){
+    footer = document.createElement("div");
+    footer.id = "finalThankYou";
+    footer.style.textAlign = "center";
+    footer.style.marginTop = "16px";
+    footer.style.color = "#9ca3af";
+    footer.style.fontSize = "14px";
+    footer.innerText = "Thank you captains & audience – KPL S03 Mega Auction successfully completed.";
+    grid.parentNode.appendChild(footer);
+  }
+
+    exportAuctionToExcel();
+  overlay.style.display = "flex";
+}
+
+
+
+
+document.addEventListener("DOMContentLoaded", ()=>{
+  if(typeof updateBudgetStrip === "function") updateBudgetStrip();
+});
+
+
+function updateRoundHighlight(){
+  document.body.classList.remove('round-1','round-2','round-3');
+  document.body.classList.add('round-' + round);
+}
+
+
+function toggleUnsoldButton(){
+  const btn = document.getElementById("unsoldBtn");
+  if(!btn) return;
+  if(round === 3){
+    btn.disabled = true;
+    btn.style.opacity = "0.4";
+    btn.innerText = "UNSOLD (Disabled in R3)";
+  } else {
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.innerText = "UNSOLD";
+  }
+}
+
+
+function isRoundComplete(){
+  const split = ROUND_SPLIT[round];
+  if(!split) return true;
+  return (roundCount.A >= split.A && roundCount.B >= split.B && roundCount.C >= split.C);
+}
+
+
+function showRoundIncomplete(){
+  const overlay = document.getElementById("roundFlashOverlay");
+  const numEl = document.getElementById("roundFlashNum");
+  if(!overlay || !numEl) return;
+  numEl.innerText = round;
+  const box = document.getElementById("roundFlashBox");
+  if(box){
+    box.style.background = "linear-gradient(135deg,#7f1d1d,#991b1b,#b91c1c)";
+    if(box.children[1]) box.children[1].innerText = "Current round not completed!";
+  }
+  overlay.style.display = "flex";
+  setTimeout(()=>{ overlay.style.display = "none"; }, 3000);
+}
+
+
+
+let countdownInterval = null;
+
+function showRoundCompleteFlash(){
+  const overlay = document.getElementById("roundCompleteOverlay");
+  const title = document.getElementById("roundCompleteTitle");
+  if(!overlay || !title) return;
+  title.innerText = "ROUND " + round + " COMPLETE";
+  overlay.style.display = "flex";
+  setTimeout(()=>{ overlay.style.display = "none"; }, 2000);
+}
+
+function openNextRoundFlow(){
+  showRoundCompleteFlash();
+  setTimeout(()=>{
+    startRoundCountdown(30, round + 1);
+  }, 2000);
+}
+
+function startRoundCountdown(seconds, targetRound){
+  const overlay = document.getElementById("roundCountdownOverlay");
+  const timerEl = document.getElementById("roundCountdownTimer");
+  if(!overlay || !timerEl) return;
+
+  let remaining = seconds;
+  overlay.style.display = "flex";
+  timerEl.innerText = formatTime(remaining);
+
+  clearInterval(countdownInterval);
+  countdownInterval = setInterval(()=>{
+    remaining--;
+    timerEl.innerText = formatTime(remaining);
+    if(remaining <= 0){
+      clearInterval(countdownInterval);
+      overlay.style.display = "none";
+      // move to next round
+      round = targetRound;
+      roundCount = {A:0,B:0,C:0};
+
+      if(typeof unsoldQueue !== 'undefined' && unsoldQueue.length>0){
+        unsoldQueue.forEach(p=>{ if(!players.includes(p)) players.push(p); });
+        unsoldQueue = [];
+      }
+
+      const rEl = document.getElementById("round");
+      if(rEl) rEl.innerText = round;
+      const rh = document.getElementById("roundHeader");
+      if(rh) rh.innerText = "ROUND " + round; if(document.getElementById("roundCap")) document.getElementById("roundCap").innerText = "₹" + ROUND_CAPS[round];
+      updateRoundCapUI();
+      if(typeof updateRoundHighlight === 'function') updateRoundHighlight();
+      if(typeof toggleUnsoldButton === 'function') toggleUnsoldButton();
+      showRoundFlash(round);
+      renderPool();
+      renderTeams();
+    }
+  },1000);
+}
+
+function formatTime(sec){
+  const m = Math.floor(sec/60).toString().padStart(2,'0');
+  const s = (sec%60).toString().padStart(2,'0');
+  return m + ":" + s;
+}
+
+function showRoundFlash(roundNum){
+  const box = document.getElementById("roundFlashOverlay");
+  if(!box) return;
+  document.getElementById("roundFlashTitle").innerText = "ROUND " + roundNum;
+  document.getElementById("roundFlashSub").innerText = "Let the bidding begin!";
+  box.style.display = "flex";
+  setTimeout(()=>{ box.style.display = "none"; }, 1800);
+}
+
+
+function showCelebration(player, team){
+  const box = document.getElementById("soldOverlay");
+  document.getElementById("soldTitle").innerText = "SOLD!";
+  document.getElementById("soldSub").innerText = `${player.name} SOLD to ${team.name} for ₹${currentBid || BASE_PRICE[player.group]}`;
+  box.style.display = "flex";
+  setTimeout(()=>{ box.style.display = "none"; }, 2200);
+}
+
+
+function sellPlayer(){
+  if(!selected) return;
+  const group = selected.group;
+
+  let team = (highestBidder !== null) ? teams[highestBidder] : null;
+  let price = (highestBidder !== null) ? currentBid : BASE_PRICE[group];
+
+  if(!team){
+    alert("Select a team to buy at base price");
+    return;
+  }
+
+  const total = team.A.length + team.B.length + team.C.length;
+  if(team[group].length >= TEAM_LIMIT[group]) return;
+  if(total >= TEAM_MAX) return;
+
+  selected.price = price;
+  team[group].push(selected);
+  team.wallet -= price;
+  team.spend += price;
+
+  roundCount[group]++;
+  totalCount[group]++;
+  players = players.filter(p=>p!==selected);
+
+  log(`${selected.name} SOLD to ${team.name} for ₹${price}`);
+  showCelebration(selected, team);
+
+  undoPick();
+  renderTeams();
+  renderPool();
+}
+
+function roundCompleted(){
+  const r = ROUND_SPLIT[round];
+  return roundCount.A===r.A && roundCount.B===r.B && roundCount.C===r.C;
+}
+
+
+// Carry Forward Rule: After Round 2, only ₹5,000 can be carried + ₹30,000 cap into Round 3
+function applyCarryForwardRule(){
+  teams.forEach(t=>{
+    if(round === 2){
+      const allowedCarry = 5000;
+      if(t.wallet > allowedCarry){
+        const forfeited = t.wallet - allowedCarry;
+        t.wallet = allowedCarry;
+        log(`Carry Forward Applied: ₹${forfeited} forfeited from ${t.name}`);
+      }
+    }
+  });
+}
+
+
+// Compulsory Rule: By end of Round 2 each team must have 1A + 1B + 2C or ₹5000 penalty
+function applyCompulsoryRule(){
+  teams.forEach(t=>{
+    if(!(t.A.length>=1 && t.B.length>=1 && t.C.length>=2)){
+      t.wallet -= 5000;
+      log(`Compulsory Rule Penalty: ₹5000 deducted from ${t.name} (missing 1A/1B/2C)`);
+    }
+  });
+}
+
+
+// Last Player Rule (Group A & B): Auto-assign remaining slot at Base + ₹1000
+function applyLastPlayerRule(){
+  teams.forEach(t=>{
+    // Group A
+    if(t.A.length < TEAM_LIMIT.A){
+      const remainingA = players.filter(p=>p.group==="A");
+      if(remainingA.length === 1){
+        const p = remainingA[0];
+        t.A.push(p);
+        t.wallet -= (BASE_PRICE.A + 1000);
+        totalCount.A++;
+        log(`Last Player Rule: ${p.name} auto-assigned to ${t.name} for ₹${BASE_PRICE.A + 1000}`);
+        players = players.filter(x=>x!==p);
+      }
+    }
+    // Group B
+    if(t.B.length < TEAM_LIMIT.B){
+      const remainingB = players.filter(p=>p.group==="B");
+      if(remainingB.length === 1){
+        const p = remainingB[0];
+        t.B.push(p);
+        t.wallet -= (BASE_PRICE.B + 1000);
+        totalCount.B++;
+        log(`Last Player Rule: ${p.name} auto-assigned to ${t.name} for ₹${BASE_PRICE.B + 1000}`);
+        players = players.filter(x=>x!==p);
+      }
+    }
+  });
+}
+
+
+// Group C Auto-Fill Rule: Any remaining Group C slots auto-assigned at Base Price ₹2000
+function applyGroupCAutoFill(){
+  teams.forEach(t=>{
+    const needed = TEAM_LIMIT.C - t.C.length;
+    if(needed > 0){
+      const remainingC = players.filter(p=>p.group==="C");
+      const toAssign = remainingC.slice(0, needed);
+      toAssign.forEach(p=>{
+        t.C.push(p);
+        t.wallet -= BASE_PRICE.C;
+        totalCount.C++;
+        log(`Group C Auto-Fill: ${p.name} auto-assigned to ${t.name} for ₹${BASE_PRICE.C}`);
+        players = players.filter(x=>x!==p);
+      });
+    }
+  });
+}
+
+
+function updateRoundCapUI(){
+  const cap = ROUND_CAPS[round] || 0;
+  const el = document.getElementById("roundCapVal");
+  if(el) el.innerText = "₹" + cap.toLocaleString();
+}
+
+
+function nextRound(){
+  // If at Round 3, only allow final summary when round AND pool are complete
+  if(round === 3){
+    const totalRemaining = players.length;
+    if(!isRoundComplete() || totalRemaining > 0){
+      showRoundIncomplete();
+      log("❌ Cannot finish auction. Round 3 not complete or players still remaining.");
+      return;
+    }
+    showFinalSummary && showFinalSummary();
+    return;
+  }
+
+  // Guard: ensure current round completed
+  if(!isRoundComplete()){
+    showRoundIncomplete();
+    log("❌ Current round is not completed. Complete required A/B/C quota before proceeding.");
+    return;
+  }
+
+  // If round complete, show complete flash then open next round flow
+  openNextRoundFlow();
+}
+
+
+
+function prevRound(){
+  log("ℹ️ You cannot go back to previous rounds once auction has started.");
+}
+
+function exportAuctionToExcel(){
+  if(typeof XLSX === 'undefined'){
+    alert('Excel export library not loaded. Please refresh the page.');
+    return;
+  }
+
+  // Create workbook
+  const wb = XLSX.utils.book_new();
+
+  // Sheet 1: Team Summary
+  const summaryData = [
+    ['KPL Season 3 - Auction Results'],
+    [],
+    ['Team', 'Captain', 'Total Players', 'Group A', 'Group B', 'Group C', 'Total Spent', 'Remaining Balance']
+  ];
+
+  teams.forEach(t => {
+    const totalSpent = 100000 - t.wallet;
+    summaryData.push([
+      t.name,
+      t.captain,
+      t.A.length + t.B.length + t.C.length,
+      t.A.length,
+      t.B.length,
+      t.C.length,
+      totalSpent,
+      t.wallet
+    ]);
+  });
+
+  const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+  XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+
+  // Sheet 2-5: Individual Team Sheets
+  teams.forEach(t => {
+    const teamData = [
+      [t.name + ' - ' + t.captain],
+      [],
+      ['Player Name', 'Group', 'Role', 'Price']
+    ];
+
+    const allPlayers = [].concat(
+      t.A.map(p => ({...p, group: 'A'})),
+      t.B.map(p => ({...p, group: 'B'})),
+      t.C.map(p => ({...p, group: 'C'}))
+    );
+
+    allPlayers.forEach(p => {
+      teamData.push([
+        p.name,
+        p.group,
+        p.stats,
+        p.price || BASE_PRICE[p.group]
+      ]);
+    });
+
+    teamData.push([]);
+    teamData.push(['Total Spent', '', '', 100000 - t.wallet]);
+    teamData.push(['Remaining Balance', '', '', t.wallet]);
+
+    const wsTeam = XLSX.utils.aoa_to_sheet(teamData);
+    XLSX.utils.book_append_sheet(wb, wsTeam, t.name);
+  });
+
+  // Sheet 6: All Players by Team
+  const allPlayersData = [
+    ['Complete Player List'],
+    [],
+    ['Team', 'Player Name', 'Group', 'Role', 'Price']
+  ];
+
+  teams.forEach(t => {
+    const allPlayers = [].concat(t.A, t.B, t.C);
+    allPlayers.forEach(p => {
+      allPlayersData.push([
+        t.name,
+        p.name,
+        p.group,
+        p.stats,
+        p.price || BASE_PRICE[p.group]
+      ]);
+    });
+  });
+
+  const wsAllPlayers = XLSX.utils.aoa_to_sheet(allPlayersData);
+  XLSX.utils.book_append_sheet(wb, wsAllPlayers, 'All Players');
+
+  // Generate filename with timestamp
+  const timestamp = new Date().toISOString().slice(0,19).replace(/:/g,'-');
+  const filename = `KPL_S03_Auction_Results_${timestamp}.xlsx`;
+
+  // Download the file
+  XLSX.writeFile(wb, filename);
+  
+  log(`✅ Auction results exported to ${filename}`);
+}
+
+teams.forEach(t=>{ if(!t.picks) t.picks={A:0,B:0,C:0}; });
+renderTeams();
+updateTeamFigures();
+renderPool();
+updateLiveCard();
+log("WELCOME TO K TOWN (A3) PREMIER LEAGUE – SEASON 3 MEGA AUCTION");
+</script>
+
+
+<!-- FINAL SUMMARY OVERLAY -->
+<div id="finalSummaryOverlay" style="display:none; position:fixed; inset:0; background:rgba(2,6,23,.92); z-index:9999; align-items:center; justify-content:center;">
+  <div style="width:92%; max-width:1200px; background:linear-gradient(180deg,#020617,#0b1220); border-radius:24px; padding:24px 28px; box-shadow:0 0 40px rgba(0,0,0,.6);">
+    <div style="text-align:center; font-size:36px; font-weight:900; color:#facc15; letter-spacing:1px;">🏆 FINAL TEAMS – KPL S03 🏆</div>
+    <div id="finalTeamsGrid" style="display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:16px;"></div>
+    <div style="text-align:center; margin-top:16px; color:#9ca3af;">Thank you captains. Auction completed successfully.</div>
+  </div>
+</div>
+
+
+<!-- ROUND COUNTDOWN OVERLAY -->
+<div id="roundCountdownOverlay" style="display:none; position:fixed; inset:0; background:rgba(2,6,23,.92); z-index:9999; align-items:center; justify-content:center;">
+  <div style="background:linear-gradient(135deg,#22c55e,#3b82f6,#a855f7); padding:40px 60px; border-radius:24px; text-align:center; box-shadow:0 0 40px rgba(0,0,0,.6); color:white;">
+    <div style="font-size:40px; font-weight:900;">Next Round Begins In</div>
+    <div id="roundCountdownTimer" style="font-size:64px; font-weight:900; margin-top:10px;">00:30</div>
+    <div style="font-size:18px; margin-top:10px; opacity:.9;">Get ready…</div>
+  </div>
+</div>
+
+
+<!-- ROUND COMPLETE OVERLAY -->
+<div id="roundCompleteOverlay" style="display:none; position:fixed; inset:0; background:rgba(2,6,23,.92); z-index:9999; align-items:center; justify-content:center;">
+  <div style="background:linear-gradient(135deg,#16a34a,#22c55e,#4ade80); padding:40px 60px; border-radius:24px; text-align:center; box-shadow:0 0 40px rgba(0,0,0,.6); color:white;">
+    <div id="roundCompleteTitle" style="font-size:42px; font-weight:900;">ROUND COMPLETE</div>
+    <div style="font-size:20px; margin-top:10px;">Get ready for next round…</div>
+  </div>
+</div>
+
+</body>
+</html>
